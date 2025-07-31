@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security News Aggregator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-shield-alt"></i> Security News Aggregator</h1>
+                <p class="subtitle">Real-time cybersecurity threat intelligence for risk management</p>
+                <div class="last-updated" id="lastUpdated">
+                    <i class="fas fa-clock"></i> Last updated: Loading...
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="controls">
+                <button id="refreshBtn" class="refresh-btn">
+                    <i class="fas fa-sync-alt"></i> Refresh News
+                </button>
+                <div class="filter-controls">
+                    <select id="sourceFilter" class="filter-select">
+                        <option value="">All Sources</option>
+                    </select>
+                    <input type="text" id="searchFilter" placeholder="Search headlines..." class="search-input">
+                </div>
+            </div>
+
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading security news...
+            </div>
+
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-card">
+                    <i class="fas fa-newspaper"></i>
+                    <span class="stat-number" id="totalArticles">0</span>
+                    <span class="stat-label">Articles</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-rss"></i>
+                    <span class="stat-number" id="totalSources">0</span>
+                    <span class="stat-label">Sources</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <span class="stat-number" id="recentArticles">0</span>
+                    <span class="stat-label">Today</span>
+                </div>
+            </div>
+
+            <div class="articles-container" id="articlesContainer">
+                <!-- Articles will be loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
