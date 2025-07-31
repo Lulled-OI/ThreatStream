@@ -1,68 +1,76 @@
-# Security News Aggregator
+# ThreatStream
 
-A cybersecurity news aggregation platform designed to help security professionals stay informed about emerging threats and vulnerabilities for effective risk management.
+A cybersecurity news aggregator that pulls headlines from major security sources and displays them in one place. Built to help stay on top of current threats and vulnerabilities.
 
-## 🎯 Project Objectives
+## What it does
 
-This project demonstrates key risk management principles:
-- **Threat Intelligence Gathering**: Automated collection from trusted security sources
-- **Information Prioritization**: Organizing threats by relevance and severity
-- **Stakeholder Communication**: Clean presentation of complex security information
-- **Continuous Monitoring**: Real-time awareness of the evolving threat landscape
+Instead of checking multiple security news sites every day, this tool automatically grabs the latest headlines from:
+- Krebs on Security
+- The Hacker News  
+- Dark Reading
+- Security Week
+- CISA Alerts
 
-## 🔍 Features
+Then displays them in a clean dashboard where you can search, filter by source, and quickly scan for relevant threats.
 
-- **Multi-Source Aggregation**: Pulls from leading cybersecurity news sources
-- **Clean Dashboard**: Professional interface for quick threat assessment
-- **Source Attribution**: Clear tracking of information sources for credibility
-- **Date Filtering**: Focus on recent threats and emerging risks
-- **Responsive Design**: Accessible across devices for on-the-go monitoring
+## Why I built this
 
-## 🏗️ Architecture
+Staying current with cybersecurity news is crucial for risk management, but manually checking 5+ different sites daily is tedious. This automates the collection and makes it easy to spot emerging threats or important vulnerability announcements.
+
+## Tech Stack
+
+- **Backend**: Python + Flask for the API
+- **Frontend**: Vanilla HTML/CSS/JavaScript (no frameworks needed)
+- **Data**: RSS feed parsing with Python's feedparser library
+
+## Project Structure
 
 ```
-security-news-aggregator/
-├── frontend/          # React-based dashboard
-├── backend/           # Python RSS feed processor
-├── docs/              # Documentation and screenshots
-└── README.md          # Project overview
+threatstream/
+├── backend/           # Flask API that fetches RSS feeds
+├── frontend/          # Web dashboard
+├── setup scripts     # Easy installation
+└── documentation
 ```
 
-## 🚀 Tech Stack
+## Quick Start
 
-- **Frontend**: React.js, CSS3, Responsive Design
-- **Backend**: Python, feedparser, Flask/FastAPI
-- **Data**: RSS/XML feed parsing
-- **Deployment**: GitHub Pages + Cloud hosting
+1. Install Python dependencies:
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   ```
 
-## 📊 Risk Management Value
+2. Start the backend:
+   ```bash
+   python app.py
+   ```
 
-This tool addresses several key risk management needs:
-1. **Early Warning System**: Rapid identification of emerging threats
-2. **Information Consolidation**: Single source of truth for security intelligence
-3. **Decision Support**: Clean data presentation for risk assessment
-4. **Compliance**: Documentation of threat monitoring activities
+3. Open `frontend/index.html` in your browser
 
-## 🔧 Installation & Setup
+The dashboard should load with the latest security news from all sources.
 
-[Installation instructions will go here]
+## Features
 
-## 📈 Future Enhancements
+- Real-time news aggregation from multiple sources
+- Search functionality to find specific topics
+- Filter by news source
+- Clean, responsive design that works on mobile
+- Automatic refresh every 30 minutes
+- Error handling for when RSS feeds are down
 
-- Threat categorization and tagging
-- Risk severity scoring
-- Email alerting for critical threats
-- Integration with threat intelligence APIs
-- Historical trend analysis
+## Future Ideas
 
-## 🤝 Contributing
+- Add keyword alerts for specific threat types
+- Category tagging (malware, breaches, vulnerabilities)
+- Email digest feature
+- Integration with CVE database
+- Simple threat severity scoring
 
-[Contributing guidelines will go here]
+## Contributing
 
-## 📄 License
+Feel free to submit issues or pull requests. This is a learning project focused on practical cybersecurity tools.
 
-MIT License - See LICENSE file for details
+## License
 
----
-
-*Built with a focus on practical cybersecurity risk management*
+MIT License
