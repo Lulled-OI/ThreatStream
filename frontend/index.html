@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doom Scroll Daily - Cybersecurity Intelligence Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrixCanvas" class="matrix-bg"></canvas>
+    
+    <div class="container">
+        <!-- Top Navigation Bar -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <div class="logo">
+                    <i class="fas fa-shield-virus"></i>
+                    <span>Doom Scroll Daily</span>
+                </div>
+                <div class="nav-status">
+                    <span class="status-indicator active"></span>
+                    <span class="status-text">OPERATIONAL</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="daily-brief-btn" onclick="window.threatDashboard.openDailyBrief()">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Daily Threat Brief</span>
+                </button>
+                <div class="threat-level">
+                    <span class="threat-label">THREAT LEVEL</span>
+                    <div class="threat-meter">
+                        <div class="threat-bar" id="threatBar"></div>
+                    </div>
+                    <span class="threat-value" id="threatLevel">MEDIUM</span>
+                </div>
+                <div class="system-time" id="systemTime"></div>
+            </div>
+        </nav>
+
+        <!-- Alert Banner -->
+        <div class="alert-banner" id="alertBanner" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="alertText">New critical vulnerabilities detected</span>
+            <button class="alert-close" onclick="closeAlert()">×</button>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Control Panel -->
+            <div class="panel control-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-sliders-h"></i> Control Center</h3>
+                    <div class="panel-controls">
+                        <button class="panel-btn" id="autoRefreshBtn">
+                            <i class="fas fa-sync-alt"></i> Auto-Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="control-row">
+                        <label>Feed Sources:</label>
+                        <select id="sourceFilter" class="cyber-select">
+                            <option value="">All Sources</option>
+                        </select>
+                    </div>
+                    <div class="control-row">
+                        <label>Threat Search:</label>
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchFilter" placeholder="Search threats, CVEs, malware..." class="cyber-input">
+                        </div>
+                    </div>
+                    <div class="control-row">
+                        <label>Severity Filter:</label>
+                        <div class="severity-filters">
+                            <button class="severity-btn critical" data-severity="critical">CRITICAL</button>
+                            <button class="severity-btn high" data-severity="high">HIGH</button>
+                            <button class="severity-btn medium" data-severity="medium">MEDIUM</button>
+                            <button class="severity-btn low" data-severity="low">LOW</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Panel -->
+            <div class="panel stats-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-chart-line"></i> Threat Intelligence</h3>
+                    <div class="refresh-indicator" id="refreshIndicator">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="stats-grid">
+                        <div class="stat-card critical">
+                            <div class="stat-icon"><i class="fas fa-skull-crossbones"></i></div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="criticalThreats">0</div>
+                                <div class="stat-label">Critical Threats</div>
+                            </div>
+                        </div>
+                        <div class="stat-card high">
+                            <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="totalArticles">0</div>
+                                <div class="stat-label">Total Alerts</div>
+                            </div>
+                        </div>
+                        <div class="stat-card medium">
+                            <div class="stat-icon"><i class="fas fa-rss"></i></div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="totalSources">0</div>
+                                <div class="stat-label">Active Sources</div>
+                            </div>
+                        </div>
+                        <div class="stat-card low">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="recentArticles">0</div>
+                                <div class="stat-label">Last 24h</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Threat Timeline -->
+            <div class="panel timeline-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-history"></i> Threat Timeline</h3>
+                    <div class="timeline-controls">
+                        <button class="timeline-btn active" data-period="24h">24H</button>
+                        <button class="timeline-btn" data-period="7d">7D</button>
+                        <button class="timeline-btn" data-period="30d">30D</button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="timeline-container" id="timelineContainer">
+                        <!-- Timeline will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Threat Feed -->
+            <div class="panel feed-panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-stream"></i> Live Threat Feed</h3>
+                    <div class="feed-status">
+                        <span class="feed-indicator live"></span>
+                        <span>LIVE</span>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="loading terminal-loading" id="loading">
+                        <div class="loading-text">
+                            <span class="cursor">></span> Initializing threat intelligence feeds...
+                        </div>
+                        <div class="loading-progress">
+                            <div class="progress-bar" id="loadingProgress"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="articles-container" id="articlesContainer">
+                        <!-- Articles will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Threat Detail Modal -->
+        <div class="modal-overlay" id="threatModal" style="display: none;">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3><i class="fas fa-info-circle"></i> Threat Analysis</h3>
+                    <button class="modal-close" onclick="closeThreatModal()">×</button>
+                </div>
+                <div class="modal-content" id="modalContent">
+                    <!-- Modal content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Buttons -->
+        <div class="fab-container">
+            <button class="fab main-fab" id="mainFab">
+                <i class="fas fa-plus"></i>
+            </button>
+            <div class="fab-menu" id="fabMenu">
+                <button class="fab secondary-fab" onclick="exportData()">
+                    <i class="fas fa-download"></i>
+                    <span class="fab-label">Export</span>
+                </button>
+                <button class="fab secondary-fab" onclick="showSettings()">
+                    <i class="fas fa-cog"></i>
+                    <span class="fab-label">Settings</span>
+                </button>
+                <button class="fab secondary-fab" onclick="showHelp()">
+                    <i class="fas fa-question"></i>
+                    <span class="fab-label">Help</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
